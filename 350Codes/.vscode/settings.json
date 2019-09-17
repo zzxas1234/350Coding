@@ -2,5 +2,11 @@
     "terminal.integrated.env.osx": {
         "PATH": "/Users/esilon/.platformio/penv/bin:/Users/esilon/.platformio/penv:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/opt/X11/bin:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Xamarin Workbooks.app/Contents/SharedSupport/path-bin",
         "PLATFORMIO_CALLER": "vscode"
+    },
+    "C_Cpp.errorSquiggles": "Enabled",
+    "files.associations": {
+        "time.h": "c",
+        "adc.h": "c",
+        "dac.h": "c"
     }
 }
