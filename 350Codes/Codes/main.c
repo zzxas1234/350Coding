@@ -4,7 +4,7 @@
 #include "freertos/task.h"
 #include "driver/gpio.h"
 #include "driver/adc.h"
-//#include "driver/dac.h"
+#include "driver/dac.h"
 #include "esp_adc_cal.h"
 #include "time.h"
 
@@ -24,6 +24,7 @@ static const adc_unit_t unit = ADC_UNIT_1;
 static int fsr1Value;
 static int fsr2Value;
 static int utsValue;
+static int calibrationValue[2];
 
 static  int fsr1MaxValue;
 static  int fsr2MaxValue;
@@ -33,7 +34,7 @@ static  int currentFsr1Value;
 static  int currentFsr2Value;
 static  int currentUtsValue;
 
-static  bool calibrationbotton;
+static  int calibrationBotton;
 
 static void systemInitialise(void)
 {
@@ -148,44 +149,101 @@ static void utsRead(void)
     utsValue = (int)uts_reading;
     }
 
+static void calibrationBottonInputCapture(void)
+{
+    
+    int calibrationTemp;
+    {
+        uint32_t calibration_Reading = 0;
+        //Multisampling
+    for (int i = 0; i < NO_OF_SAMPLES; i++) 
+    {
+        if (unit == ADC_UNIT_1) {
+            calibration_Reading += adc1_get_raw((adc1_channel_t)calibrationChannel);
+        } 
+        else 
+        {
+            int raw;
+            adc2_get_raw((adc2_channel_t)calibrationChannel, ADC_WIDTH_BIT_12, &raw);
+            calibration_Reading += raw;
+        }
+    }
+    calibration_Reading /= NO_OF_SAMPLES;
+    //Convert adc_reading to voltage in mV
+    uint32_t voltage = esp_adc_cal_raw_to_voltage(calibration_Reading, adc_chars);
+    printf("FSR1 Reading --> Raw: %d\tVoltage: %dmV\n", calibration_Reading, voltage);
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    calibrationTemp = (int)calibration_Reading;
+    //botton is pressed or not ?
+    //1=old value 2=new value
+    calibrationValue[1] = calibrationValue[2];
+
+        if (calibrationTemp > 0)
+        {
+            calibrationValue[2] = true;
+        }
+        else
+        {
+            calibrationValue[2] = false;
+        }
+        
+        if (calibrationValue[1] == 0 && calibrationValue[2] == 1)
+        {
+            calibration();
+        }
+        else{}
+    }
+}
+
 static void calibration(void)
     {
-    calibrationStart = true;
-    fsr1MaxValue = ((fsr1Value >= fsr1MaxValue) == 1)? fsr1Value:fsr1MaxValue;
-    fsr2MaxValue = ((fsr2Value >= fsr2MaxValue) == 1)? fsr2Value:fsr2MaxValue;
+//program = 1 ----> check if the botton hold for 5 second
+//program = 2 ----> getting data from all sensors
+//program = 3 ----> check if the botton hold for 5 second
+    int holdingTime = 5;//hold botton for 5 second
+    int timer = 0;
+    bool calibrationStart = true;
+    bool timerStart = false;
+    while (calibrationStart)
+    {
+        if (calibrationValue[1] == 0 && calibrationValue[2] == 0)
+        {
+            calibrationBottonInputCapture();
+        }
+
+        else if (calibrationValue[1] == 0 && calibrationValue[2] == 1)
+        {
+            calibrationBottonInputCapture();
+        }
+
+        else if (calibrationValue[1] == 1 && calibrationValue[2] == 0)
+        {
+            calibrationBottonInputCapture();
+        }
+
+        else if (calibrationValue[1] == 1 && calibrationValue[2] == 1)
+        {
+            calibrationBottonInputCapture();
+            timer++;
+        }
+            if ((timer/portTICK_PERIOD_MS) >= holdingTime)
+            {
+                //turn LED on >>>go to update value function
+                calibrationUpdateValue()
+            }
+    }
+
+    
 
     }
 //usinng adc1 for switch>>A1
-static int calibrationSwitch(int modes)
+static void calibrationUpdateValue(void)
 {
-    bool bottonPressed;
-    int holdingTime = 5;
-    clock_t start = clock();  
-    //botton realease > measure time > if more than 5 go to next one
-    if (modes == 0)
-    {
-        clock_t stop = clock();
-        double elapsed = (double)(stop - start) * 1000.0 / CLOCKS_PER_SEC;
-        printf("Time elapsed in ms: %f", elapsed);
-        if ((int)elapsed >= holdingTime)
-        {
-            while(~bottonPressed)
-            {
-                calibration();
-            }
-        
-        }
-    }
-    //input = 0
-    else if (modes == 1)
-    {
-    }
+    fsr1MaxValue = ((fsr1Value >= fsr1MaxValue) == 1)? fsr1Value:fsr1MaxValue;
+    fsr2MaxValue = ((fsr2Value >= fsr2MaxValue) == 1)? fsr2Value:fsr2MaxValue;
 }
 
-static void calibrationBottonInputCapture(void)
-{
-//if calibration botton is pressed>=1 if not = 0
-}
+
 
 
 void app_main(void)
