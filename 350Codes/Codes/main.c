@@ -229,7 +229,7 @@ static void calibration(void)
             if ((timer/portTICK_PERIOD_MS) >= holdingTime)
             {
                 //turn LED on >>>go to update value function
-                calibrationUpdateValue()
+                calibrationUpdateValue();
             }
     }
 
@@ -242,9 +242,6 @@ static void calibrationUpdateValue(void)
     fsr1MaxValue = ((fsr1Value >= fsr1MaxValue) == 1)? fsr1Value:fsr1MaxValue;
     fsr2MaxValue = ((fsr2Value >= fsr2MaxValue) == 1)? fsr2Value:fsr2MaxValue;
 }
-
-
-
 
 void app_main(void)
 {
