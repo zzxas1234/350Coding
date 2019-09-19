@@ -36,7 +36,19 @@ static  int currentUtsValue;
 
 static  int calibrationBotton;
 
-void systemInitialise(void)
+static void print_char_val_type(esp_adc_cal_value_t val_type)
+{
+   
+    if (val_type == ESP_ADC_CAL_VAL_EFUSE_TP) {
+        printf("Characterized using Two Point Value\n");
+    } else if (val_type == ESP_ADC_CAL_VAL_EFUSE_VREF) {
+        printf("Characterized using eFuse Vref\n");
+    } else {
+        printf("Characterized using Default Vref\n");
+    }
+}
+
+static void systemInitialise(void)
 {
     //Configure ADC
     adc1_config_width(ADC_WIDTH_BIT_12);
@@ -63,17 +75,6 @@ static void check_efuse(void)
         printf("eFuse Vref: Supported\n");
     } else {
         printf("eFuse Vref: NOT supported\n");
-    }
-}
-
-static void print_char_val_type(esp_adc_cal_value_t val_type)
-{
-    if (val_type == ESP_ADC_CAL_VAL_EFUSE_TP) {
-        printf("Characterized using Two Point Value\n");
-    } else if (val_type == ESP_ADC_CAL_VAL_EFUSE_VREF) {
-        printf("Characterized using eFuse Vref\n");
-    } else {
-        printf("Characterized using Default Vref\n");
     }
 }
 
@@ -148,7 +149,7 @@ static void utsRead(void)
     vTaskDelay(pdMS_TO_TICKS(1000));
     utsValue = (int)uts_reading;
     }
-
+/*
 void calibrationBottonInputCapture(void)
 {
     
@@ -195,7 +196,16 @@ void calibrationBottonInputCapture(void)
     }
 }
 
-void calibration(void)
+
+//usinng adc1 for switch>>A1
+void calibrationUpdateValue(void)
+{
+
+    fsr1MaxValue = ((fsr1Value >= fsr1MaxValue) == 1)? fsr1Value:fsr1MaxValue;
+    fsr2MaxValue = ((fsr2Value >= fsr2MaxValue) == 1)? fsr2Value:fsr2MaxValue;
+}
+
+static void calibration(void)
     {
 //program = 1 ----> check if the botton hold for 5 second
 //program = 2 ----> getting data from all sensors
@@ -233,16 +243,8 @@ void calibration(void)
             }
     }
 
-    
-
-    }
-//usinng adc1 for switch>>A1
-void calibrationUpdateValue(void)
-{
-
-    fsr1MaxValue = ((fsr1Value >= fsr1MaxValue) == 1)? fsr1Value:fsr1MaxValue;
-    fsr2MaxValue = ((fsr2Value >= fsr2MaxValue) == 1)? fsr2Value:fsr2MaxValue;
 }
+*/
 
 void app_main(void)
 {

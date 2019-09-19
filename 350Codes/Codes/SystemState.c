@@ -12,10 +12,10 @@ static int bed_current;
 static int bed_prev;
 static int cancel = /* GPIO pin*/;
 
-char system_set(void){
+int system_set(void){
 
-char system_state = 0;
-char state_temp = 0;
+int system_state = 0;
+int state_temp = 0;
 
 
         if(bed_prev == 1){state_temp |= BED_PREV_MASK};
@@ -61,7 +61,7 @@ char state_temp = 0;
         }
         else if ((usds_current == 2) | (usds_prev == 2))
         {
-            system_state = 7 // "usds_Covered";
+            system_state = 7; // "usds_Covered";
         }
         else
         {
