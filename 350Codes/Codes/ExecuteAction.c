@@ -1,6 +1,17 @@
 // Action Execute Function
+#include <stdio.h>
+#include <stdlib.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "driver/gpio.h"
+#include "driver/adc.h"
+#include "driver/dac.h"
+#include "esp_adc_cal.h"
+#include "time.h"
 
-void execute_action(void){
+static int system_state = 0;
+
+static void execute_action(void){
 //switch-case - action based on system state
 
     switch (system_state)
@@ -13,44 +24,31 @@ void execute_action(void){
             break;
         case 2: //"fall_Out":
             printf("Emergency Warning: Fall Out\n");
-            // send warning (high priority)
+            // gpio_set_level(gpio_num_tgpio_num, uint32_t level)
             break;
         case 3: //"sit_Exit":
             printf("Warning: Sit-Up Exit\n");
-            // send warning (low priority)
+            // gpio_set_level(gpio_num_tgpio_num, uint32_t level)
             break;
         case 4: //"bed_Occupied":
             printf("Bed Occupied\n");
+            // gpio_set_level(gpio_num_tgpio_num, uint32_t level)
             break;
         case 5: //"bed_Enter" : 
             printf("Bed Entered\n");
+            // gpio_set_level(gpio_num_tgpio_num, uint32_t level)
             break;
         case 6: //"sit_Warning":
             printf("Warning: Sit-Up, Possible Exit");
-            // send warning (low priority)
+            // gpio_set_level(gpio_num_tgpio_num, uint32_t level)
             break;
         case 7: //"usds_Covered":
             printf("Distance Sensor Covered");
+            // gpio_set_level(gpio_num_tgpio_num, uint32_t level)
             break;
         case 8: //"error":
             printf("System State Error");
             break;
-    }
-
-    if(system_state == 2|3|6){
-        // Check cancel for 10 seconds
-        int i; 
-        for (i = 0; i < 10; i++) { 
-            // delay of one second 
-            vTaskDelay(1000/portTICK_PERIOD_MS);
-
-            printf("%d seconds have passed\n", i + 1);
-        
-            if (cancel == 1){
-            // send cancel - set cancel pin connected to VitalCare chip
-            // disable warning pin
-            }
-        } 
     }
 
 return();
