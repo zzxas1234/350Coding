@@ -1,0 +1,13 @@
+# Target labels
+ mconf-idf
+# Source files and their labels
+/Users/esilon/350FILE/Codes/350Coding/350Codes/BuildHere/build/bootloader/CMakeFiles/mconf-idf
+/Users/esilon/350FILE/Codes/350Coding/350Codes/BuildHere/build/bootloader/CMakeFiles/mconf-idf.rule
+/Users/esilon/350FILE/Codes/350Coding/350Codes/BuildHere/build/bootloader/CMakeFiles/mconf-idf-complete.rule
+/Users/esilon/350FILE/Codes/350Coding/350Codes/BuildHere/build/bootloader/mconf-idf-prefix/src/mconf-idf-stamp/mconf-idf-install.rule
+/Users/esilon/350FILE/Codes/350Coding/350Codes/BuildHere/build/bootloader/mconf-idf-prefix/src/mconf-idf-stamp/mconf-idf-mkdir.rule
+/Users/esilon/350FILE/Codes/350Coding/350Codes/BuildHere/build/bootloader/mconf-idf-prefix/src/mconf-idf-stamp/mconf-idf-download.rule
+/Users/esilon/350FILE/Codes/350Coding/350Codes/BuildHere/build/bootloader/mconf-idf-prefix/src/mconf-idf-stamp/mconf-idf-update.rule
+/Users/esilon/350FILE/Codes/350Coding/350Codes/BuildHere/build/bootloader/mconf-idf-prefix/src/mconf-idf-stamp/mconf-idf-patch.rule
+/Users/esilon/350FILE/Codes/350Coding/350Codes/BuildHere/build/bootloader/mconf-idf-prefix/src/mconf-idf-stamp/mconf-idf-configure.rule
+/Users/esilon/350FILE/Codes/350Coding/350Codes/BuildHere/build/bootloader/mconf-idf-prefix/src/mconf-idf-stamp/mconf-idf-build.rule
