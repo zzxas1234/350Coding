@@ -4,9 +4,7 @@
 #include "freertos/task.h"
 #include "driver/gpio.h"
 #include "driver/adc.h"
-#include "driver/dac.h"
 #include "esp_adc_cal.h"
-#include "time.h"
 
 #define DEFAULT_VREF    1100        //Use adc2_vref_to_gpio() to obtain a better estimate
 #define NO_OF_SAMPLES   64          //Multisampling
@@ -16,7 +14,6 @@ static esp_adc_cal_characteristics_t *adc_chars;
 static const adc_channel_t fsr1Channel = ADC1_CHANNEL_4;            //Pin32
 static const adc_channel_t fsr2Channel = ADC1_CHANNEL_5;            //Pin33
 static const adc_channel_t utsChannel = ADC1_CHANNEL_6;             //PinA2
-//static const adc_channel_t calibrationChannel = ADC1_CHANNEL_3;     //PinA3
 
 static const adc_atten_t atten = ADC_ATTEN_DB_0;
 static const adc_unit_t unit = ADC_UNIT_1;
@@ -24,7 +21,7 @@ static const adc_unit_t unit = ADC_UNIT_1;
 static int fsr1Value;
 static int fsr2Value;
 static int utsValue;
-/*
+
 static int calibrationValue[2];
 
 static  int fsr1MaxValue;
@@ -36,7 +33,7 @@ static  int currentFsr2Value;
 static  int currentUtsValue;
 
 static  int calibrationBotton;
-*/
+
 static void print_char_val_type(esp_adc_cal_value_t val_type)
 {
    
@@ -88,12 +85,6 @@ static void fsr1Read(void)
         if (unit == ADC_UNIT_1) {
             fsr1_reading += adc1_get_raw((adc1_channel_t)fsr1Channel);
         } 
-        else 
-        {
-            int raw;
-            adc2_get_raw((adc2_channel_t)fsr1Channel, ADC_WIDTH_BIT_12, &raw);
-            fsr1_reading += raw;
-        }
     }
     fsr1_reading /= NO_OF_SAMPLES;
     //Convert adc_reading to voltage in mV
@@ -112,12 +103,6 @@ static void fsr2Read(void)
         if (unit == ADC_UNIT_1) {
             fsr2_reading += adc1_get_raw((adc1_channel_t)fsr2Channel);
         } 
-        else 
-        {
-            int raw;
-            adc2_get_raw((adc2_channel_t)fsr2Channel, ADC_WIDTH_BIT_12, &raw);
-            fsr2_reading += raw;
-        }
     }
     fsr2_reading /= NO_OF_SAMPLES;
     //Convert adc_reading to voltage in mV
@@ -136,12 +121,6 @@ static void utsRead(void)
         if (unit == ADC_UNIT_1) {
             uts_reading += adc1_get_raw((adc1_channel_t)utsChannel);
         } 
-        else 
-        {
-            int raw;
-            adc2_get_raw((adc2_channel_t)utsChannel, ADC_WIDTH_BIT_12, &raw);
-            uts_reading += raw;
-        }
     }
     uts_reading /= NO_OF_SAMPLES;
     //Convert adc_reading to voltage in mV
@@ -206,7 +185,7 @@ void calibrationUpdateValue(void)
     fsr2MaxValue = ((fsr2Value >= fsr2MaxValue) == 1)? fsr2Value:fsr2MaxValue;
 }
 
-static void calibration(void)
+void calibration(void)
     {
 //program = 1 ----> check if the botton hold for 5 second
 //program = 2 ----> getting data from all sensors
@@ -245,8 +224,8 @@ static void calibration(void)
     }
 
 }
-*/
 
+*/
 void app_main(void)
 {
         //Check if Two Point or Vref are burned into eFuse
