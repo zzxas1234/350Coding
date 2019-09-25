@@ -22,6 +22,9 @@ static int fsr1Value;
 static int fsr2Value;
 static int utsValue;
 
+static int fsr1MaxValue;
+static int fsr2MaxValue;
+
 
 //static int calibrationValue[2];
 static void print_char_val_type(esp_adc_cal_value_t val_type)
@@ -120,6 +123,16 @@ static void utsRead(void)
     utsValue = (float)uts_reading;
     }
 
+
+
+static void initialValueUpdatingFcn()
+{
+
+    fsr1MaxValue = fsr1Value;
+    fsr2MaxValue = fsr2Value;
+
+}
+
 void app_main(void)
 {
         //Check if Two Point or Vref are burned into eFuse
@@ -140,9 +153,9 @@ void app_main(void)
         {
             /* code */
         }
-        
-        
     }
+        
+   
     
 }
 
