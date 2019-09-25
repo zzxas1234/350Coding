@@ -38,7 +38,8 @@
 
 static xQueueHandle gpio_evt_queue = NULL;
 static int countTimer;
-static bool calibrationTriggered;
+bool calibrationTriggered;
+static bool calibrationUpdating;
 
 static void IRAM_ATTR gpio_isr_handler(void* arg)
 {
@@ -128,6 +129,7 @@ void app_main(void)
             //calibration function
             printf("LED is on\n");
             printf("Calibration routine started\n");
+            calibrationUpdating = !calibrationUpdating;
         }
         //these 2 else if is not necessary
         else if (countTimer == 0)
