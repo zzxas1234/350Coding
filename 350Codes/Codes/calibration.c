@@ -111,6 +111,7 @@ void app_main(void)
             countTimer++;
             //printf("countTimer added\n");
         }
+        //this else if is not nevessary
         else if (calibrationTriggered == false && countTimer > 5)
         {
             printf("Calibration routine finish ( botton released )\n");
@@ -122,11 +123,13 @@ void app_main(void)
         }
         
 
-        if (countTimer == 5)
+        if (countTimer >= 5)
         {
+            //calibration function
             printf("LED is on\n");
             printf("Calibration routine started\n");
         }
+        //these 2 else if is not necessary
         else if (countTimer == 0)
         {
 
